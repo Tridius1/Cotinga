@@ -454,6 +454,9 @@ pub fn generate_gcode(
             entry.x, entry.y
         ));
 
+        // Lower pen
+        output.push_str("G0 Z0\n");
+
         for (index, movement) in stroke.moves_iter(step.inverted).enumerate() {
             let end = if step.inverted {
                 stroke.points()[stroke.points().len() - 2 - index]
@@ -511,6 +514,8 @@ pub fn generate_gcode(
                 }
             }
         }
+        // Lift the pen before moving to another stroke.
+        output.push_str("G0 Z1\n");
     }
 
     Ok(output)
