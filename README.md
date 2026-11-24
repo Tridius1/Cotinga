@@ -1,8 +1,8 @@
 # Cotinga
 
-**Cotinga** is a command-line G-code optimizer designed to reduce unnecessary pen-up travel in plotter-generated toolpaths.
+**Cotinga** is a command-line G-code optimizer designed to reduce unnecessary non-productive travel in CNC toolpaths, intended for pen plotting and engraving.
 
-It works by treating individual drawing strokes as a routing problem, reordering and reversing strokes where beneficial to minimize the distance traveled between them while preserving their geometry. The result is less wasted movement and faster plotting.
+It works by treating individual toolpath strokes as a routing problem, reordering and reversing strokes where beneficial to minimize the distance traveled between them while preserving their geometry. The result is less wasted movement and shorter machine operation times.
 
 ## Features
 
