@@ -32,7 +32,7 @@ use crate::movement::{Point, RouteStep, Stroke};
 const MIN_IMPROVEMENT: f64 = 0.001;
  
 /// Neighbors stored per endpoint. Larger finds more moves but costs more.
-const NEIGHBORS: usize = 20;
+const NEIGHBORS: usize = 500;
  
 /// Longest run of strokes that Or-opt will relocate.
 const MAX_SEGMENT_LEN: usize = 5;
