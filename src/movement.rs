@@ -215,3 +215,18 @@ impl RouteStep {
         }
     }
 }
+
+pub fn travel_distance(strokes: &[Stroke], route: &[RouteStep]) -> f64 {
+    route
+        .windows(2)
+        .map(|pair| {
+            let from = &strokes[pair[0].stroke_idx].exit(pair[0].inverted);
+            let to = &strokes[pair[1].stroke_idx].entry(pair[1].inverted);
+
+            let dx = from.x - to.x;
+            let dy = from.y - to.y;
+
+            (dx * dx + dy * dy).sqrt()
+        })
+        .sum()
+}

@@ -1,4 +1,4 @@
-use std::fmt::Write;
+
 use crate::movement::{ArcMove, LinearMove, Move, Point, Stroke};
 
 #[derive(Debug, Clone)]
@@ -457,7 +457,7 @@ pub fn generate_gcode(
         // Lower pen
         output.push_str("G0 Z0\n");
 
-        for (index, movement) in stroke.moves_iter(step.inverted).enumerate() {
+        for (index, _movement) in stroke.moves_iter(step.inverted).enumerate() {
             let end = if step.inverted {
                 stroke.points()[stroke.points().len() - 2 - index]
             } else {
