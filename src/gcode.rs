@@ -1,10 +1,13 @@
 
+use std::fmt;
+
 use crate::movement::{ArcMove, LinearMove, Move, Point, Stroke};
 
 #[derive(Debug, Clone)]
 pub struct GCode {
     pub header: Vec<String>,
     pub strokes: Vec<Stroke>,
+    pub units: Units
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -15,10 +18,20 @@ enum PositioningMode {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-enum Units {
+pub enum Units {
     Unknown,
     Inches,
     Millimeters,
+}
+
+impl fmt::Display for Units {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Units::Unknown => write!(f, "units"),
+            Units::Inches => write!(f, "inches"),
+            Units::Millimeters => write!(f, "millimeters"),
+        }
+    }
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -266,6 +279,7 @@ pub fn parse_gcode(input: &str) -> Result<GCode, String> {
     Ok(GCode {
         header,
         strokes,
+        units: state.units
     })
 }
 

@@ -136,10 +136,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         &route,
     ).map_err(|e| format!("Failed to generate G-code: {e}"))?;
 
-    // Write output.
-    fs::write(&output, output_gcode)?;
-
-
     let optimized_distance = movement::travel_distance(
         &gcode.strokes,
         &route,
@@ -151,6 +147,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     eprintln!("Optimized travel: {:.2}", optimized_distance);
     eprintln!("Improvement: {:.2}%", improvement);
     println!("");
+
+    let final_gcode = format!(
+        "; GCODE optimized for pen plotting with Cotinga {}\n\
+         ; Cotinga by Tristan Swanson\n\
+         ;\n\
+         ; Original travel distance {:.2} {}\n\
+         ; Optimized travel distance {:.2} {}\n\
+         ; Improvement: {:.2}%\n\n\n{}",
+        env!("CARGO_PKG_VERSION"),
+        original_distance,
+        gcode.units,
+        optimized_distance,
+        gcode.units,
+        improvement,
+        output_gcode
+    );
+
+    // Write output.
+    fs::write(&output, final_gcode)?;
 
     Ok(())
 }
