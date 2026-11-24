@@ -4,6 +4,7 @@ use std::path::PathBuf;
 use std::sync::mpsc;
 use std::io::{self, Write};
 use std::thread;
+use std::path::Path;
 
 use clap::{Parser, ValueEnum};
 
@@ -57,7 +58,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Determine output path if one wasn't provided.
     let output = args.output.unwrap_or_else(|| {
         args.filename.with_file_name(format!(
-            "{}_opt_{}{}",
+            "{}_Cotinga_{}{}",
             args.filename.file_stem().unwrap_or_default().to_string_lossy(),
             args.mode.as_str(),
             args.filename.extension()
@@ -172,6 +173,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // Write output.
     fs::write(&output, final_gcode)?;
 
+    print!("Optimized GCODE: ");
+    print_hyperlink(&output);
+
     Ok(())
 }
 
+fn print_hyperlink(path: &Path) {
+    let absolute_path = std::fs::canonicalize(path)
+        .unwrap_or_else(|_| path.to_path_buf());
+
+    let path_str = absolute_path
+        .display()
+        .to_string()
+        .replace('\\', "/")
+        .trim_start_matches("//?/")
+        .to_string();
+
+    let url = format!("file:///{}", path_str);
+
+    print!("\x1b]8;;{}\x1b\\", url);
+    print!("{}", path.display());
+    print!("\x1b]8;;\x1b\\");
+    println!("\n");
+}
