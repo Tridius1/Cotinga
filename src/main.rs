@@ -27,6 +27,10 @@ struct Args {
     /// Optimization algorithm
     #[arg(short, long, value_enum, default_value_t = Mode::Greedy)]
     mode: Mode,
+
+    /// Z height for travel moves
+    #[arg(short, long, default_value_t = 1.0)]
+    zhop: f64,
 }
 
 #[derive(Clone, Copy, Debug, ValueEnum, PartialEq)]
@@ -134,6 +138,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         &gcode.header,
         &gcode.strokes,
         &route,
+        &args.zhop,
     ).map_err(|e| format!("Failed to generate G-code: {e}"))?;
 
     let optimized_distance = movement::travel_distance(

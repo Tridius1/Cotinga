@@ -446,6 +446,7 @@ pub fn generate_gcode(
     header: &[String],
     strokes: &[Stroke],
     route: &[RouteStep],
+    zhop: &f64,
 ) -> Result<String, String> {
     let mut output = String::new();
 
@@ -454,6 +455,9 @@ pub fn generate_gcode(
         output.push_str(line);
         output.push('\n');
     }
+
+    // Ensure pen is lifted at start
+    output.push_str(format!("G0 Z{}\n", zhop).as_str());
 
     for step in route {
         let stroke = strokes.get(step.stroke_idx).ok_or_else(|| {
@@ -529,7 +533,7 @@ pub fn generate_gcode(
             }
         }
         // Lift the pen before moving to another stroke.
-        output.push_str("G0 Z1\n");
+        output.push_str(format!("G0 Z{}\n", zhop).as_str());
     }
 
     Ok(output)
