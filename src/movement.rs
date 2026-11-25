@@ -56,15 +56,6 @@ impl ArcMove {
 }
 
 impl Move {
-    #[inline]
-    pub fn feed_rate(&self) -> Option<f64> {
-        match self {
-            Self::Linear(movement) => movement.feed_rate,
-            Self::ClockwiseArc(movement) => movement.feed_rate,
-            Self::CounterclockwiseArc(movement) => movement.feed_rate,
-        }
-    }
-
     /// Returns the movement in the opposite direction.
     pub fn reversed(&self) -> Self {
         match self {
@@ -117,20 +108,6 @@ impl Stroke {
 
     pub fn points(&self) -> &[Point] {
         &self.points
-    }
-
-    pub fn moves(&self) -> &[Move] {
-        &self.moves
-    }
-
-    #[inline]
-    pub fn start(&self) -> Point {
-        self.start
-    }
-
-    #[inline]
-    pub fn end(&self) -> Point {
-        self.end
     }
 
     #[inline]
